@@ -277,6 +277,21 @@ EOF
 sudo chmod 755 /etc/slurm
 
 ```
+Now lets gets slurm started with systemd:
+```
+$ sudo systemctl start slurmctld
+$ sudo systemctl start slurmd
+```
+Lastly, let's set our machine as idle, so we can start queuing up jobs:
+```
+$ sudo scontrol update nodename=localhost state=idle
+$ sinfo
+PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
+LocalQ*      up   infinite      1   idle localhost
+```
+If successful you see the above and well done, you have got slurm up and running. You now have a queue(or “partition” in slurm lingo) called LocalQ that you can now submit your work to. If you have any issues you can debug it by looking in the logs in /var/log/slurm-llnl/slurmd.log and /var/log/slurm-llnl/slurmctld.log.
+
+Now you have a working slurm queue, if you need to make changes to your config edit the slurm.conf and simply restart slurmctld and slurmd via systemd. For more information about how to use slurm, there are lots of articles online. Just google “how to submit jobs to slurm” and also check out the slurm website. Happy computing!
 
 ## slurm command
 sbatch
